@@ -231,3 +231,25 @@ img {
 .reveal section img {
     box-shadow: none;
 }
+
+section.vertical {
+    display: flex !important;
+    flex-direction: column;
+    align-items: center;
+}
+
+.reveal .middle {
+    display: flex;
+    flex-grow: 2;
+    align-items: center;
+}
+
+.reveal .idea {
+    font-style: italic;
+    font-size: larger;
+}
+
+.reveal .idea:before {
+    content: '💡';
+    font-style: initial;
+}
