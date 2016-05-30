@@ -54,6 +54,14 @@
     src: url('../fonts/SourceCodePro-Light.ttf');
 }
 
+section.size-XL,
+section .size-XL,
+pre.size-XL {
+    font-size: 65px;
+    line-height: 100px;
+}
+
+
 section.size-L,
 section .size-L,
 pre.size-L {
@@ -246,7 +254,6 @@ section.vertical {
 
 .reveal .idea {
     font-style: italic;
-    font-size: larger;
 }
 
 .reveal .idea:before {
