@@ -82,6 +82,83 @@
     <section>
         <h3>В памяти</h3>
     </section>
+
+    <section class="vertical">
+        <h3>Задача</h3>
+
+        <p class="fragment middle idea size-XL">
+            Показать список сортов кофе
+        </p>
+    </section>
+
+    <section>
+        <pre><code class="hljs javascript size-S" data-trim>
+var app = express();
+        </code></pre>
+
+        <pre class="fragment"><code class="hljs javascript size-S" data-trim>
+app.get('/', (req, res) => {
+    fetchProducts()
+        .then(data => res.json(data));
+});
+        </code></pre>
+
+        <pre class="fragment"><code class="hljs javascript size-S" data-trim>
+app.listen(3000);
+        </code></pre>
+    </section>
+
+    <section data-background="images/00_no-cache.jpg" class="image">
+        <h3>Без кеша</h3>
+    </section>
+
+    <section>
+        <h3>В переменной</h3>
+    </section>
+
+    <section>
+        <pre><code class="hljs javascript size-S" data-trim>
+var cache;
+        </code></pre>
+
+        <pre class="fragment"><code class="hljs javascript size-S" data-trim>
+app.get('/', (req, res) => {
+    cache = cache || fetchProducts();
+    cache.then(data => res.json(data));
+});
+        </code></pre>
+    </section>
+
+    <section data-background="images/01_in-memory.jpg" class="image">
+        <h3>В переменной</h3>
+    </section>
+
+    <section>
+        <h3>lru-cache</h3>
+    </section>
+
+    <section>
+        <pre><code class="hljs javascript size-S" data-trim>
+var LRU = require('lru-cache');
+var cache = LRU({ maxAge: 3000 });
+        </code></pre>
+
+        <pre class="fragment"><code class="hljs javascript size-S" data-trim>
+app.get('/', (req, res) => {
+    if (!cache.has('coffee')) {
+      cache.set('coffee', fetchProducts());
+    }
+
+    cache
+        .get('coffee')
+        .then(data => res.json(data));
+});
+        </code></pre>
+    </section>
+
+    <section data-background="images/02_lru-cache.jpg" class="image">
+        <h3>lru-cache</h3>
+    </section>
 </section>
 
 <section>

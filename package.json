@@ -1,0 +1,29 @@
+{
+  "name": "frontend-fellows-cache",
+  "version": "0.0.1",
+  "description": "Materials for frontend fellows conference",
+  "main": "index.html",
+  "directories": {
+    "example": "examples"
+  },
+  "dependencies": {
+    "express": "^4.13.4",
+    "lru-cache": "^4.0.1"
+  },
+  "devDependencies": {},
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git@github.yandex-team.ru:zhigalov/frontend-fellows-cache.git"
+  },
+  "keywords": [
+    "nodejs",
+    "cache",
+    "lru-cache",
+    "optimization"
+  ],
+  "author": "Sergey Zhigalov <zhigalov@yandex-team.ru>",
+  "license": "MIT"
+}
