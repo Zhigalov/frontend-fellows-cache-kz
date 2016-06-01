@@ -54,14 +54,6 @@
             Пережить нагрузку в черную пятницу.
         </p>
     </section>
-
-    <section class="vertical">
-        <h3>Простому фронтендеру?</h3>
-
-        <p class="fragment middle idea size-XL">
-            Освободить половину серверов.
-        </p>
-    </section>
 </section>
 
 <section>
@@ -69,26 +61,34 @@
 
     <p class="pos left fragment size-L">Статика</p>
     <p class="pos left fragment size-L">Данные</p>
+    <p class="pos left fragment size-L">Шаблоны</p>
     <p class="pos left fragment size-L">Результаты вычислений</p>
 </section>
 
 <section>
     <section>
         <h3>Из коробки</h3>
+
+        <p class="pos left fragment size-L">DNS</p>
+        <p class="pos left fragment size-L">HTTP запросы</p>
+        <p class="pos left fragment size-L">Ajax (get)</p>
+        <p class="pos left fragment size-L">...</p>
+    </section>
+</section>
+
+<section>
+    <section>
+        <h3>Как кешировать?</h3>
+    </section>
+
+    <section class="image" data-background="images/coffee.jpg" >
+        <h4>Показать список сортов кофе</h4>
     </section>
 </section>
 
 <section>
     <section>
         <h3>В памяти</h3>
-    </section>
-
-    <section class="vertical">
-        <h3>Задача</h3>
-
-        <p class="fragment middle idea size-XL">
-            Показать список сортов кофе
-        </p>
     </section>
 
     <section>
@@ -124,7 +124,9 @@ var cache;
         <pre class="fragment"><code class="hljs javascript size-S" data-trim>
 app.get('/', (req, res) => {
     cache = cache || fetchProducts();
-    cache.then(data => res.json(data));
+    cache
+        .then(data => res.json(data))
+        .catch(err => cache = null);
 });
         </code></pre>
     </section>
@@ -151,7 +153,8 @@ app.get('/', (req, res) => {
 
     cache
         .get('coffee')
-        .then(data => res.json(data));
+        .then(data => res.json(data))
+        .catch(err => cache.del('coffee'));
 });
         </code></pre>
     </section>
@@ -165,11 +168,27 @@ app.get('/', (req, res) => {
     <section>
         <h3>Распределенный кэш</h3>
     </section>
-</section>
 
-<section>
     <section>
-        <h3>Хранилище</h3>
+        <img src="images/cache_single.png" alt="Single cache" />
+    </section>
+
+    <section>
+        <img src="images/cache_multiple.png" alt="Multiple cache" />
+    </section>
+
+    <section>
+        <img src="images/cache_union.png" alt="Union cache" />
+    </section>
+
+    <section>
+        <img src="images/redisio.png" alt="Shared cache" />
+    </section>
+
+    <section>
+        <p>
+            //TODO: пример
+        </p>
     </section>
 </section>
 
@@ -184,13 +203,6 @@ app.get('/', (req, res) => {
         <h3>Разогрев кэша</h3>
     </section>
 </section>
-
-<section>
-    <section>
-        <h3>Алгоритмы инвалидации</h3>
-    </section>
-</section>
-
 </div>
 
 </div>
