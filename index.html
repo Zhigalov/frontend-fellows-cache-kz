@@ -182,26 +182,74 @@ app.get('/', (req, res) => {
     </section>
 
     <section>
-        <img src="images/redisio.png" alt="Shared cache" />
+        <img src="images/redisio.png" alt="redisio" />
     </section>
 
     <section>
-        <p>
-            //TODO: пример
+        <pre><code class="hljs javascript size-S" data-trim>
+var redis = require('redis');
+var client = redis.createClient();
+        </code></pre>
+    </section>
+
+    <section>
+        <pre><code class="hljs javascript size-XS" data-trim>
+client.getAsync('coffee')
+        </code></pre>
+        <pre><code class="hljs javascript size-XS fragment">    .then(data => {
+        return JSON.parse(data) || fetchProducts();
+    })
+        </code></pre>
+        <pre><code class="hljs javascript size-XS fragment">    .then(data => {
+        client.set('coffee', JSON.stringify(data));
+        return data;
+    })
+        </code></pre>
+        <pre><code class="hljs javascript size-XS fragment">    .then(data => res.json(data));</code></pre>
+    </section>
+</section>
+
+<section>
+    <section class="vertical">
+        <h3>Эффективность кэша</h3>
+
+        <p class="middle fragment">
+            Hit Rate = Попадание в кэш / Количество запросов
         </p>
     </section>
 </section>
 
 <section>
     <section>
-        <h3>Эффективность кэша</h3>
+        <h3>Разогрев кэша</h3>
+            <pre><code class="hljs javascript size-S fragment" data-trim>
+// ...
+app.listen(3000);
+
+cache.set('coffee', fetchProducts());
+            </code></pre>
     </section>
 </section>
 
 <section>
-    <section>
-        <h3>Разогрев кэша</h3>
-    </section>
+    <h3>Советы</h3>
+
+    <p class="idea fragment">Кэшировать после всех оптимизаций</p>
+    <p class="idea fragment">Кэш - вспомогательная компонента</p>
+    <p class="idea fragment">Все должно работать и без кэша</p>
+</section>
+
+<section>
+    <h3>Спасибо!</h3>
+
+    <pre><code class="hljs javascript size-XS" data-trim data-noescape>
+cache.set('speaker', {
+    face: <img src="images/zhigalov.jpeg" alt="My face!" width="300" />,
+    name: 'Сергей',
+    twitter: '@sergey_zhigalov',
+    email: 'zhigalov@yandex-team.ru'
+});
+</code></pre>
 </section>
 </div>
 
