@@ -35,6 +35,8 @@
 
 <section>
     <h2>Осторожно, закэшировано!</h2>
+    <br>
+    <p><span style="color:red;">С</span>ергей Жигалов<br /><img src="images/logo.svg" alt="Яндекс"/></p>
 </section>
 
 <section>
@@ -42,8 +44,8 @@
         <h3>Простому фронтендеру?</h3>
 
         <p class="fragment middle idea size-XL">
-            Сделать мое приложение в 2 раза быстрее
-            потратив на это пол дня.
+            Сделать мое приложение на порядок быстрее
+            потратив на это несколько часов.
         </p>
     </section>
 
@@ -59,21 +61,10 @@
 <section>
     <h3>Что кэшировать</h3>
 
-    <p class="pos left fragment size-L">Статика</p>
-    <p class="pos left fragment size-L">Данные</p>
+    <p class="pos left fragment size-L">Статика (HTTP запросы)</p>
+    <p class="pos left fragment size-L">Получение данных</p>
     <p class="pos left fragment size-L">Шаблоны</p>
     <p class="pos left fragment size-L">Результаты вычислений</p>
-</section>
-
-<section>
-    <section>
-        <h3>Из коробки</h3>
-
-        <p class="pos left fragment size-L">DNS</p>
-        <p class="pos left fragment size-L">HTTP запросы</p>
-        <p class="pos left fragment size-L">Ajax (get)</p>
-        <p class="pos left fragment size-L">...</p>
-    </section>
 </section>
 
 <section>
@@ -87,10 +78,6 @@
 </section>
 
 <section>
-    <section>
-        <h3>В памяти</h3>
-    </section>
-
     <section>
         <pre><code class="hljs javascript size-S" data-trim>
 var app = express();
@@ -166,10 +153,6 @@ app.get('/', (req, res) => {
 
 <section>
     <section>
-        <h3>Распределенный кэш</h3>
-    </section>
-
-    <section>
         <img src="images/cache_single.png" alt="Single cache" />
     </section>
 
@@ -182,41 +165,53 @@ app.get('/', (req, res) => {
     </section>
 
     <section>
+        <h3>Распределенный кэш</h3>
+    </section>
+
+
+    <section>
         <img src="images/redisio.png" alt="redisio" />
     </section>
 
     <section>
         <pre><code class="hljs javascript size-S" data-trim>
 var redis = require('redis');
-var client = redis.createClient();
+var cache = redis.createClient();
+        </code></pre>
+
+        <pre><code class="hljs javascript size-S fragment" data-trim>
+bluebird.promisifyAll(
+    redis.RedisClient.prototype
+);
         </code></pre>
     </section>
 
     <section>
         <pre><code class="hljs javascript size-XS" data-trim>
-client.getAsync('coffee')
+cache.getAsync('coffee')
         </code></pre>
         <pre><code class="hljs javascript size-XS fragment">    .then(data => {
-        return JSON.parse(data) || fetchProducts();
-    })
-        </code></pre>
-        <pre><code class="hljs javascript size-XS fragment">    .then(data => {
-        client.set('coffee', JSON.stringify(data));
-        return data;
-    })
-        </code></pre>
+        if (data) {
+            return JSON.parse(data);
+        }</code></pre>
+        <pre><code class="hljs javascript size-XS fragment">
+        return fetchProducts().then(data => {
+            client.set('coffee', JSON.stringify(data));
+            return data;
+        });
+    })</code></pre>
         <pre><code class="hljs javascript size-XS fragment">    .then(data => res.json(data));</code></pre>
     </section>
 </section>
 
 <section>
     <section>
-        <h3>Свойства кэша</h3>
+        <h3>Кэш - это</h3>
 
         <p class="pos left fragment size-L">Быстрый доступ</p>
-        <p class="pos left fragment size-L">Ограничение по размеру</p>
         <p class="pos left fragment size-L">"Горячие" данные</p>
-        <p class="pos left fragment size-L">Не всегда актуальные</p>
+        <p class="neg left fragment size-L">Не всегда актуальные</p>
+        <p class="neg left fragment size-L">Ограничение по размеру</p>
     </section>
 
     <section class="vertical">
@@ -243,9 +238,10 @@ cache.set('coffee', fetchProducts());
 <section>
     <h3>Советы</h3>
 
-    <p class="idea fragment">Кэшировать после всех оптимизаций</p>
-    <p class="idea fragment">Кэш - вспомогательная компонента</p>
-    <p class="idea fragment">Все должно работать и без кэша</p>
+    <br>
+    <p class="idea fragment left size-L">Кэшировать после всех оптимизаций</p>
+    <p class="idea fragment left size-L">Кэш - вспомогательная компонента</p>
+    <p class="idea fragment left size-L">Все должно работать и без кэша</p>
 </section>
 
 <section>

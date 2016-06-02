@@ -11,11 +11,14 @@ var client = redis.createClient();
 app.get('/', (req, res) => {
     client.getAsync('coffee')
         .then(data => {
-            return JSON.parse(data) || fetchProducts();
-        })
-        .then(data => {
-            client.set('coffee', JSON.stringify(data));
-            return data;
+            if (data) {
+                return JSON.parse(data);
+            }
+
+            return fetchProducts().then(data => {
+                client.set('coffee', JSON.stringify(data));
+                return data;
+            });
         })
         .then(data => res.json(data));
 });
