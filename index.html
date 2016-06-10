@@ -196,8 +196,8 @@ cache.getAsync('coffee')
         }</code></pre>
         <pre><code class="hljs javascript size-XS fragment">
         return fetchProducts().then(data => {
-            client.set('coffee', JSON.stringify(data));
-            return data;
+          client.set('coffee', JSON.stringify(data));
+          return data;
         });
     })</code></pre>
         <pre><code class="hljs javascript size-XS fragment">    .then(data => res.json(data));</code></pre>
