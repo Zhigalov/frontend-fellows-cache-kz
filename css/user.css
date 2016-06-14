@@ -149,14 +149,16 @@ img {
 
 .pos,
 .neg,
-.question {
+.question,
+.neitral {
     padding-left: 50px !important;
 }
 
 
 .pos:before,
 .neg:before,
-.question:before {
+.question:before,
+.neitral:before {
     position: absolute;
     left: 0;
 }
@@ -174,6 +176,11 @@ img {
 .question:before {
     content: '?';
     color: #546BD2 !important;
+}
+
+.neitral:before {
+    content: '•';
+    color: #FFA500 !important;
 }
 
 .reveal .slide-number {

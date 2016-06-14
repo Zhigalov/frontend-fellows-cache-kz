@@ -45,7 +45,7 @@
 
         <p class="fragment middle idea size-XL">
             Сделать мое приложение на порядок быстрее
-            потратив на это несколько часов.
+            потратив на это пару часов.
         </p>
     </section>
 
@@ -53,7 +53,7 @@
         <h3>Простому фронтендеру?</h3>
 
         <p class="fragment middle idea size-XL">
-            Пережить нагрузку в черную пятницу.
+            Пережить нагрузку в «черную пятницу».
         </p>
     </section>
 </section>
@@ -100,6 +100,27 @@ app.listen(3000);
     </section>
 
     <section>
+        <img src="images/batching_first_user.svg" alt="First user" />
+    </section>
+
+    <section>
+        <img src="images/batching_second_user.svg" alt="Second user" />
+    </section>
+
+    <section>
+        <img src="images/batching.svg" alt="Batching" />
+    </section>
+</section>
+
+<section>
+    <section>
+        <h3>Концепция кеширования</h3>
+        <small>//todo: абстрактно описать концепцию кеширования</small>
+    </section>
+</section>
+
+<section>
+    <section>
         <h3>В переменной</h3>
     </section>
 
@@ -122,6 +143,17 @@ app.get('/', (req, res) => {
         <h3>В переменной</h3>
     </section>
 
+    <section>
+        <h3>В переменной</h3>
+
+        <p class="pos left fragment size-L">Кеширование данных</p>
+        <p class="pos left fragment size-L">Объединение запросов</p>
+        <p class="neitral left fragment size-L">Фейл одного запроса фейлит все</p>
+        <p class="neg left fragment size-L">Время жизни не ограничено</p>
+    </section>
+</section>
+
+<section>
     <section>
         <h3>lru-cache</h3>
     </section>
@@ -149,6 +181,15 @@ app.get('/', (req, res) => {
     <section data-background="images/02_lru-cache.jpg" class="image">
         <h3>lru-cache</h3>
     </section>
+
+    <section>
+        <h3>lru-cache</h3>
+
+        <p class="pos left fragment size-L">Кеширование данных</p>
+        <p class="pos left fragment size-L">Объединение запросов</p>
+        <p class="pos left fragment size-L">Контролируемое время жизни кэша</p>
+        <p class="neitral left fragment size-L">Фейл одного запроса фейлит все</p>
+    </section>
 </section>
 
 <section>
@@ -167,7 +208,6 @@ app.get('/', (req, res) => {
     <section>
         <h3>Распределенный кэш</h3>
     </section>
-
 
     <section>
         <img src="images/redisio.png" alt="redisio" />
@@ -205,25 +245,16 @@ cache.getAsync('coffee')
 </section>
 
 <section>
-    <section>
-        <h3>Кэш - это</h3>
-
-        <p class="pos left fragment size-L">Быстрый доступ</p>
-        <p class="pos left fragment size-L">"Горячие" данные</p>
-        <p class="neg left fragment size-L">Не всегда актуальные</p>
-        <p class="neg left fragment size-L">Ограничение по размеру</p>
-    </section>
-
-    <section class="vertical">
-        <h3>Эффективность кэша</h3>
-
-        <p class="middle fragment">
-            Hit Rate = Попадание в кэш / Количество запросов
-        </p>
-    </section>
+    <h3>Эффективность кэша</h3>
+    <small>//todo: про эффективность кэша на примере персональных данных</small>
 </section>
 
 <section>
+    <section>
+        <h3>Разогрев кэша</h3>
+        <small>//todo: про разогрев кэша на примере SPA</small>
+    </section>
+
     <section>
         <h3>Разогрев кэша</h3>
             <pre><code class="hljs javascript size-S fragment" data-trim>
@@ -236,25 +267,18 @@ cache.set('coffee', fetchProducts());
 </section>
 
 <section>
-    <h3>Советы</h3>
-
-    <br>
-    <p class="idea fragment left size-L">Кэшировать после всех оптимизаций</p>
-    <p class="idea fragment left size-L">Кэш - вспомогательная компонента</p>
-    <p class="idea fragment left size-L">Все должно работать и без кэша</p>
+    <section>
+        <h3>Антипример</h3>
+        <small>//todo: про неверное использование кэша на примере сохранения картинок</small>
+    </section>
 </section>
 
-<section>
-    <h3>Спасибо!</h3>
 
-    <pre><code class="hljs javascript size-XS" data-trim data-noescape>
-cache.set('speaker', {
-    face: <img src="images/zhigalov.jpeg" alt="My face!" width="300" />,
-    name: 'Сергей',
-    twitter: '@sergey_zhigalov',
-    email: 'zhigalov@yandex-team.ru'
-});
-</code></pre>
+<section>
+    <section>
+        <h3>Кэш - вспомогательная компонента</h3>
+        <small>//todo: про прикручивание кэша через абстракцию</small>
+    </section>
 </section>
 </div>
 
