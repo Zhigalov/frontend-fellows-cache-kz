@@ -3,9 +3,16 @@ var app = express();
 var fetch = require('./fetch');
 var calculate = require('./calculate');
 
+var cache;
+
 app.get('/', (req, res) => {
+    if (cache) {
+        return res.json(cache);
+    }
+
     fetch()
         .then(calculate)
+        .then(data => cache = data)
         .then(data => res.json(data));
 });
 

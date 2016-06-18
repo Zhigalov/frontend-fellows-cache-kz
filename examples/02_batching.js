@@ -3,10 +3,14 @@ var app = express();
 var fetch = require('./fetch');
 var calculate = require('./calculate');
 
+var cache;
+
 app.get('/', (req, res) => {
-    fetch()
-        .then(calculate)
-        .then(data => res.json(data));
+    cache = cache || fetch().then(calculate);
+
+    cache
+        .then(data => res.json(data))
+        .catch(() => cache = null);
 });
 
 app.listen(3000, function () {

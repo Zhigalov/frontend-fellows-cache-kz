@@ -19,7 +19,7 @@
     <link rel="stylesheet" href="css/user.css">
 
 	<!-- Code syntax highlighting -->
-	<link rel="stylesheet" href="lib/css/default.min.css">
+	<link rel="stylesheet" href="plugin/highlight/github.min.css">
 
 	<!--[if lt IE 9]>
 	<script src="lib/js/html5shiv.js"></script>
@@ -43,7 +43,7 @@
     <section class="vertical">
         <h3>Простому фронтендеру?</h3>
 
-        <p class="fragment middle idea size-XL">
+        <p class="middle idea size-XL">
             Сделать мое приложение на порядок быстрее
             потратив на это пару часов.
         </p>
@@ -52,8 +52,8 @@
     <section class="vertical">
         <h3>Простому фронтендеру?</h3>
 
-        <p class="fragment middle idea size-XL">
-            Пережить нагрузку в «черную пятницу».
+        <p class="middle idea size-XL">
+            Пережить нагрузку в <br />«черную пятницу».
         </p>
     </section>
 </section>
@@ -63,15 +63,10 @@
 
     <p class="pos left fragment size-L">Статика (HTTP запросы)</p>
     <p class="pos left fragment size-L">Получение данных</p>
-    <p class="pos left fragment size-L">Шаблоны</p>
     <p class="pos left fragment size-L">Результаты вычислений</p>
 </section>
 
 <section>
-    <section>
-        <h3>Как кэшировать?</h3>
-    </section>
-
     <section class="image" data-background="images/coffee.jpg" >
         <h4>Показать список сортов кофе</h4>
     </section>
@@ -79,77 +74,89 @@
 
 <section>
     <section>
-        <pre><code class="hljs javascript size-S" data-trim>
-var app = express();
-        </code></pre>
+<pre><code class="js size-S">const app = express();
 
-        <pre class="fragment"><code class="hljs javascript size-S" data-trim>
-app.get('/', (req, res) => {
-    fetchProducts()
-        .then(data => res.json(data));
-});
-        </code></pre>
+</code></pre>
+<pre class="fragment" data-fragment-index="2"><code class="js size-S">app.get('/', (req, res) => {</code></pre>
+<pre class="fragment" data-fragment-index="3"><code class="js size-S">    fetch()</code></pre>
+<pre class="fragment" data-fragment-index="4"><code class="js size-S">        .then(calculate)</code></pre>
+<pre class="fragment" data-fragment-index="5"><code class="js size-S">        .then(data => res.json(data));</code></pre>
+<pre class="fragment" data-fragment-index="2"><code class="js size-S">}
 
-        <pre class="fragment"><code class="hljs javascript size-S" data-trim>
-app.listen(3000);
-        </code></pre>
+</code></pre>
+<pre class="fragment" data-fragment-index="6"><code class="js size-S">app.listen(3000);</code></pre>
+    </section>
+
+    <section class="image">
+        <img src="images/without_cache.svg" alt="without cache" height="100%" />
     </section>
 
     <section data-background="images/00_no-cache.jpg" class="image">
-        <h3>Без кэша</h3>
-    </section>
-
-    <section>
-        <img src="images/batching_first_user.svg" alt="First user" />
-    </section>
-
-    <section>
-        <img src="images/batching_second_user.svg" alt="Second user" />
-    </section>
-
-    <section>
-        <img src="images/batching.svg" alt="Batching" />
     </section>
 </section>
 
 <section>
     <section>
-        <h3>Концепция кеширования</h3>
-        <small>//todo: абстрактно описать концепцию кеширования</small>
-    </section>
-</section>
-
-<section>
-    <section>
-        <h3>В переменной</h3>
+        <h3>Кеширование данных</h3>
     </section>
 
     <section>
-        <pre><code class="hljs javascript size-S" data-trim>
-var cache;
-        </code></pre>
+<pre><code class="js size-S">var cache;
 
-        <pre class="fragment"><code class="hljs javascript size-S" data-trim>
-app.get('/', (req, res) => {
-    cache = cache || fetchProducts();
-    cache
-        .then(data => res.json(data))
-        .catch(err => cache = null);
-});
-        </code></pre>
+</code></pre>
+<pre class="fragment" data-fragment-index="2"><code class="js size-S">app.get('/', (req, res) => {</code></pre>
+<pre class="fragment" data-fragment-index="3"><code class="js size-S">    if (cache) { return res.json(cache); }
+
+</code></pre>
+<pre class="fragment" data-fragment-index="4"><code class="js size-S">    fetch()</code></pre>
+<pre class="fragment" data-fragment-index="5"><code class="js size-S">        .then(calculate)</code></pre>
+<pre class="fragment" data-fragment-index="6"><code class="js size-S">        .then(data => cache = data)</code></pre>
+<pre class="fragment" data-fragment-index="7"><code class="js size-S">        .then(data => res.json(data));</code></pre>
+<pre class="fragment" data-fragment-index="2"><code class="js size-S">}</code></pre>
+    </section>
+
+    <section class="image">
+        <img src="images/cache.svg" alt="Simple cache" height="100%"/>
     </section>
 
     <section data-background="images/01_in-memory.jpg" class="image">
-        <h3>В переменной</h3>
     </section>
 
     <section>
-        <h3>В переменной</h3>
+        <p class="pos left size-L">Уменьшили время ответа</p>
+    </section>
+</section>
 
-        <p class="pos left fragment size-L">Кеширование данных</p>
-        <p class="pos left fragment size-L">Объединение запросов</p>
-        <p class="neitral left fragment size-L">Фейл одного запроса фейлит все</p>
-        <p class="neg left fragment size-L">Время жизни не ограничено</p>
+<section>
+    <section class="image">
+        <img src="images/without_batching.svg" alt="Cache without batching" height="100%"/>
+    </section>
+
+    <section>
+        <h3>Объединение запросов</h3>
+    </section>
+
+    <section>
+<pre><code class="js size-S">var cache;
+
+</code></pre>
+<pre class="fragment" data-fragment-index="2"><code class="js size-S">app.get('/', (req, res) => {</code></pre>
+<pre class="fragment" data-fragment-index="3"><code class="js size-S">    cache = cache ||
+            fetch().then(calculate);
+</code></pre>
+<pre class="fragment" data-fragment-index="4"><code class="js size-S">    cache</code></pre>
+<pre class="fragment" data-fragment-index="5"><code class="js size-S">        .then(data => res.json(data))</code></pre>
+<pre class="fragment" data-fragment-index="6"><code class="js size-S">        .catch(() => cache = null);</code></pre>
+<pre class="fragment" data-fragment-index="2"><code class="js size-S">}</code></pre>
+    </section>
+
+    <section class="image">
+        <img src="images/batching.svg" alt="Cache with batching" height="100%"/>
+    </section>
+
+    <section>
+        <p class="pos left size-L">Уменьшили время ответа</p>
+        <p class="pos left size-L">Уменьшили нагрузку</p>
     </section>
 </section>
 
@@ -163,19 +170,19 @@ app.get('/', (req, res) => {
 var LRU = require('lru-cache');
 var cache = LRU({ maxAge: 3000 });
         </code></pre>
+    </section>
 
-        <pre class="fragment"><code class="hljs javascript size-S" data-trim>
-app.get('/', (req, res) => {
-    if (!cache.has('coffee')) {
-      cache.set('coffee', fetchProducts());
-    }
-
-    cache
-        .get('coffee')
-        .then(data => res.json(data))
-        .catch(err => cache.del('coffee'));
-});
+    <section>
+        <pre class="fragment" data-fragment-index="2"><code class="js size-S">app.get('/', (req, res) => {</code></pre>
+        <pre class="fragment" data-fragment-index="3"><code class="js size-S">    if (!cache.has('coffee')) {</code></pre>
+        <pre class="fragment" data-fragment-index="3"><code class="js size-S">        var data = fetch().then(calculate);</code></pre>
+        <pre class="fragment" data-fragment-index="3"><code class="js size-S">        cache.set('coffee', data);</code></pre>
+        <pre class="fragment" data-fragment-index="3"><code class="js size-S">    }
         </code></pre>
+        <pre class="fragment" data-fragment-index="4"><code class="js size-S">    cache.get('coffee')</code></pre>
+        <pre class="fragment" data-fragment-index="5"><code class="js size-S">        .then(data => res.json(data))</code></pre>
+        <pre class="fragment" data-fragment-index="6"><code class="js size-S">        .catch(() => cache.del('coffee'));</code></pre>
+        <pre class="fragment" data-fragment-index="2"><code class="js size-S">}</code></pre>
     </section>
 
     <section data-background="images/02_lru-cache.jpg" class="image">
@@ -183,12 +190,9 @@ app.get('/', (req, res) => {
     </section>
 
     <section>
-        <h3>lru-cache</h3>
-
-        <p class="pos left fragment size-L">Кеширование данных</p>
-        <p class="pos left fragment size-L">Объединение запросов</p>
-        <p class="pos left fragment size-L">Контролируемое время жизни кэша</p>
-        <p class="neitral left fragment size-L">Фейл одного запроса фейлит все</p>
+        <p class="pos left size-L">Уменьшили время ответа</p>
+        <p class="pos left size-L">Уменьшили нагрузку</p>
+        <p class="pos left size-L">Контролируем время жизни</p>
     </section>
 </section>
 
@@ -300,7 +304,7 @@ cache.set('coffee', fetchProducts());
             history: true,
             dependencies: [
 				{ src: 'lib/js/classList.js', condition: function() { return !document.body.classList; } },
-				{ src: 'plugin/highlight/highlight.js', async: true, callback: function() { hljs.initHighlightingOnLoad(); } },
+				{ src: 'plugin/highlight/highlight.min.js', async: true, callback: function() { hljs.initHighlightingOnLoad(); console.log(1);} },
 				{ src: 'plugin/zoom-js/zoom.js', async: true },
 				{ src: 'plugin/notes/notes.js', async: true }
 			]
