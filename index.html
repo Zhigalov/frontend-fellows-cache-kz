@@ -35,8 +35,8 @@
 
 <section>
     <h2>Осторожно, закэшировано!</h2>
-    <br>
-    <p><span style="color:red;">С</span>ергей Жигалов<br /><img src="images/logo.svg" alt="Яндекс"/></p>
+    <!-- <br>
+    <p><span style="color:red;">С</span>ергей Жигалов<br /><img src="images/logo.svg" alt="Яндекс"/></p> -->
 </section>
 
 <section>
@@ -250,7 +250,10 @@ var cache = new Redis();
     <section>
         <h3>Эффективность кэша</h3>
 
-        <pre><code class="size-S">HitRate = 'из кэша' / 'число запросов'</code></pre>
+        <blockquote class="fragment">
+            Кажется, эти данные нам нужны всегда и обновляются редко
+        </blockquote>
+        <pre class="fragment"><code class="size-S">HitRate = 'из кэша' / 'число запросов'</code></pre>
     </section>
 
     <section>
@@ -350,8 +353,51 @@ cache.set('coffee', fetch().then(calculate));
 <section>
     <section>
         <h3>Кэш - вспомогательная компонента</h3>
-        <small>//todo: про прикручивание кэша через абстракцию</small>
     </section>
+
+    <section>
+        <pre><code class="js size-S">
+class BaseModel {
+    fetch (url) {
+        return request(url);
+    }
+}
+        </code></pre>
+    </section>
+
+    <section>
+        <pre><code class="js size-S">
+var cache;
+
+class CacheBaseModel extends BaseModel {
+    fetch() {
+        cache = cache || super.fetch();
+        return cache.catch(() => cache = null);
+    }
+}
+        </code></pre>
+    </section>
+
+    <section class="image">
+        <img src="images/abstraction.svg" alt="Models abstraction" height="100%" />
+    </section>
+
+    <section>
+        <p class="pos left size-L">Легко менять реализацию кэша</p>
+        <p class="pos left size-L">Настрока кэширования моделей</p>
+    </section>
+</section>
+
+<section>
+    <h3>Спасибо</h3>
+
+    <pre><code class="size-S">
+cache.set('Осторожно, закэшировано!', {
+    name: 'Жигалов Сергей',
+    twitter: '@sergey_zhigalov',
+    email: 'zhigalov@yandex-team.ru'
+});
+    </code></pre>
 </section>
 </div>
 
