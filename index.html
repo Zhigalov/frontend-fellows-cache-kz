@@ -197,16 +197,16 @@ var cache = LRU({ maxAge: 3000 });
 </section>
 
 <section>
-    <section>
-        <img src="images/cache_single.png" alt="Single cache" />
+    <section class="image">
+        <img src="images/single_frontend.svg" alt="Single cache" width="100%" />
     </section>
 
-    <section>
-        <img src="images/cache_multiple.png" alt="Multiple cache" />
+    <section class="image">
+        <img src="images/multi_frontend.svg" alt="Multiple cache" width="100%"/>
     </section>
 
-    <section>
-        <img src="images/cache_union.png" alt="Union cache" />
+    <section class="image">
+        <img src="images/union_cache.svg" alt="Union cache" width="100%"/>
     </section>
 
     <section>
@@ -219,32 +219,30 @@ var cache = LRU({ maxAge: 3000 });
 
     <section>
         <pre><code class="hljs javascript size-S" data-trim>
-var redis = require('redis');
-var cache = redis.createClient();
-        </code></pre>
-
-        <pre><code class="hljs javascript size-S fragment" data-trim>
-bluebird.promisifyAll(
-    redis.RedisClient.prototype
-);
+var Redis = require('ioredis');
+var cache = new Redis();
         </code></pre>
     </section>
 
     <section>
-        <pre><code class="hljs javascript size-XS" data-trim>
-cache.getAsync('coffee')
-        </code></pre>
-        <pre><code class="hljs javascript size-XS fragment">    .then(data => {
-        if (data) {
-            return JSON.parse(data);
-        }</code></pre>
-        <pre><code class="hljs javascript size-XS fragment">
-        return fetchProducts().then(data => {
-          client.set('coffee', JSON.stringify(data));
-          return data;
-        });
-    })</code></pre>
-        <pre><code class="hljs javascript size-XS fragment">    .then(data => res.json(data));</code></pre>
+        <pre class="fragment" data-fragment-index="3"><code class="js size-XS">cache.get('coffee')</code></pre>
+        <pre class="fragment" data-fragment-index="4"><code class="js size-XS">    .then(data => {</code></pre>
+        <pre class="fragment" data-fragment-index="5"><code class="js size-XS">        return data ? JSON.parse(data) : fetch()</code></pre>
+        <pre class="fragment" data-fragment-index="6"><code class="js size-XS">            .then(calculate)</code></pre>
+        <pre class="fragment" data-fragment-index="7"><code class="js size-XS">            .then(data => {</code></pre>
+        <pre class="fragment" data-fragment-index="7"><code class="js size-XS">                cache.set('coffee', data, 'EX', 3);</code></pre>
+        <pre class="fragment" data-fragment-index="7"><code class="js size-XS">                return data;</code></pre>
+        <pre class="fragment" data-fragment-index="7"><code class="js size-XS">            })</code></pre>
+        <pre class="fragment" data-fragment-index="8"><code class="js size-XS">            .catch(() => cache.del('coffee'));</code></pre>
+        <pre class="fragment" data-fragment-index="4"><code class="js size-XS">    })</code></pre>
+        <pre class="fragment" data-fragment-index="9"><code class="js size-XS">    .then(data => res.json(data));</code></pre>
+    </section>
+
+    <section>
+        <p class="pos left size-L">Уменьшили время ответа</p>
+        <p class="pos left size-L">Уменьшили нагрузку</p>
+        <p class="pos left size-L">Контролируем время жизни</p>
+        <p class="pos left size-L">Общий кэш для всех инстансов</p>
     </section>
 </section>
 

@@ -1,24 +1,20 @@
 var express = require('express');
 var app = express();
-var fetchProducts = require('./fetchProducts');
-var redis = require('redis');
-var bluebird = require('bluebird');
-
-bluebird.promisifyAll(redis.RedisClient.prototype);
-
-var client = redis.createClient();
+var fetch = require('./fetch');
+var calculate = require('./calculate');
+var Redis = require('ioredis');
+var cache = new Redis();
 
 app.get('/', (req, res) => {
-    client.getAsync('coffee')
+    cache.get('coffee')
         .then(data => {
-            if (data) {
-                return JSON.parse(data);
-            }
-
-            return fetchProducts().then(data => {
-                client.set('coffee', JSON.stringify(data));
-                return data;
-            });
+            return data ? JSON.parse(data) : fetch()
+                .then(calculate)
+                .then(data => {
+                    cache.set('coffee', JSON.stringify(data), 'EX', 3);
+                    return data;
+                })
+                .catch(() => cache.del('coffee'));
         })
         .then(data => res.json(data));
 });
