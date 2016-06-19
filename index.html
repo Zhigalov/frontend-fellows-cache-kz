@@ -247,26 +247,91 @@ var cache = new Redis();
 </section>
 
 <section>
-    <h3>Эффективность кэша</h3>
-    <small>//todo: про эффективность кэша на примере персональных данных</small>
+    <section>
+        <h3>Эффективность кэша</h3>
+
+        <pre><code class="size-S">HitRate = 'из кэша' / 'число запросов'</code></pre>
+    </section>
+
+    <section>
+        <table>
+            <thead>
+                <tr>
+                    <td>Запрос</td>
+                    <td>Кэш</td>
+                    <td>Эффективность</td>
+                </tr>
+            </thead>
+
+            <tbody>
+                <tr class="fragment">
+                    <td><code>/</code></td>
+                    <td><code class="size-XS">'coffee'</code></td>
+                    <td><code>~99%</code></td>
+                </tr>
+                <tr class="fragment">
+                    <td><code>/:region</code></td>
+                    <td><code class="size-XS">'Indonesia', 'Africa', ...</code></td>
+                    <td><code>~98%</code></td>
+                </tr>
+                <tr class="fragment">
+                    <td><code>/:uid</code></td>
+                    <td><code class="size-XS">'user1', 'user2', ..., 'user100500'</code></td>
+                    <td><code>~1%</code></td>
+                </tr>
+            </tbody>
+        </table>
+    </section>
+
+    <section>
+        <p class="pos left size-L">Кэшировать популярные данные</p>
+        <p class="neg left size-L">Не кэшировать песональные данные</p>
+        <p class="neg left size-L">Не кэшировать сложные комбинации</p>
+    </section>
 </section>
 
 <section>
     <section>
         <h3>Разогрев кэша</h3>
-        <small>//todo: про разогрев кэша на примере SPA</small>
     </section>
 
     <section>
-        <h3>Разогрев кэша</h3>
-            <pre><code class="hljs javascript size-S fragment" data-trim>
+        <h3>Горячий старт</h3>
+        <pre><code class="hljs javascript size-S fragment" data-trim>
 // ...
 app.listen(3000);
 
-cache.set('coffee', fetchProducts());
-            </code></pre>
+cache.set('coffee', fetch().then(calculate));
+        </code></pre>
+    </section>
+
+    <section>
+        <h3>SPA</h3>
+        <small>TODO: картинка, которая иллюстрирует проблему</small>
+    </section>
+
+    <section>
+        <pre><code class="size-M">
+&lt;script&gt;
+    var data = {
+        '/coffee': { ... },
+        '/favorite': { ... },
+        '/userData': { ... }
+    };
+&lt;/script&gt;
+        </code></pre>
+    </section>
+
+    <section>
+<pre><code class="js size-M">function request(url) {</code></pre>
+<pre class="fragment" data-fragment-index="2"><code class="js size-M">    return data[url]</code></pre>
+<pre class="fragment" data-fragment-index="3"><code class="js size-M">      ? Promise.resolve(data[url])</code></pre>
+<pre class="fragment" data-fragment-index="4"><code class="js size-M">      : $.get(url);</code></pre>
+<pre><code class="js size-M">}</code></pre>
     </section>
 </section>
+
+
 
 <section>
     <section>
