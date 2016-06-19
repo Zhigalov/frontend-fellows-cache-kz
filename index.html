@@ -35,8 +35,6 @@
 
 <section>
     <h2>Осторожно, закэшировано!</h2>
-    <!-- <br>
-    <p><span style="color:red;">С</span>ергей Жигалов<br /><img src="images/logo.svg" alt="Яндекс"/></p> -->
 </section>
 
 <section>
@@ -78,10 +76,122 @@
 
 </code></pre>
 <pre class="fragment" data-fragment-index="2"><code class="js size-S">app.get('/', (req, res) => {</code></pre>
-<pre class="fragment" data-fragment-index="3"><code class="js size-S">    fetch()</code></pre>
-<pre class="fragment" data-fragment-index="4"><code class="js size-S">        .then(calculate)</code></pre>
-<pre class="fragment" data-fragment-index="5"><code class="js size-S">        .then(data => res.json(data));</code></pre>
+<pre class="fragment" data-fragment-index="3"><code class="js size-S">    fetch()
+
+
+</code></pre>
 <pre class="fragment" data-fragment-index="2"><code class="js size-S">}
+
+
+</code></pre>
+    </section>
+
+    <section>
+        <table>
+            <thead>
+                <tr>
+                    <td>
+                        <code>fetch()</code>
+                    </td>
+                </tr>
+            </thead>
+            <tbody>
+                <tr>
+                    <td>
+                        <pre><code class='size-XXS' style="width: 100%">
+[
+    {
+        name: 'Timor',
+        region: 'Indonesia'
+    },
+    {
+        name: 'Mocha',
+        region: 'Yemen'
+    },
+    {
+        name: 'Java',
+        region: 'Indonesia'
+    }
+]
+                        </code></pre>
+                    </td>
+                </tr>
+            </tbody>
+        </table>
+    </section>
+
+    <section>
+<pre><code class="js size-S">const app = express();
+
+</code></pre>
+<pre><code class="js size-S">app.get('/', (req, res) => {</code></pre>
+<pre><code class="js size-S">    fetch()</code></pre>
+<pre class="fragment" data-fragment-index="4"><code class="js size-S">        .then(calculate)
+
+</code></pre>
+<pre><code class="js size-S">}
+
+
+</code></pre>
+    </section>
+
+    <section>
+        <table>
+            <thead>
+                <tr>
+                    <td><code>fetch()</code></td>
+                    <td><code>calculate()</code></td>
+                </tr>
+            </thead>
+            <tbody>
+
+            </tbody>
+                <tr>
+                    <td>
+                        <pre><code class='size-XXS' style="width: 100%">
+[
+    {
+        name: 'Timor',
+        region: 'Indonesia'
+    },
+    {
+        name: 'Mocha',
+        region: 'Yemen'
+    },
+    {
+        name: 'Java',
+        region: 'Indonesia'
+    }
+]
+                        </code></pre>
+                    </td>
+                    <td>
+                        <pre><code class='size-XXS' style="width: 100%">
+{
+    Indonesia: [
+        'Timor',
+        'Java'
+    ],
+    Mocha: [
+        'Yemen'
+    ]
+}
+                        </code></pre>
+                    </td>
+                </tr>
+            </tbody>
+        </table>
+    </section>
+
+    <section>
+<pre><code class="js size-S">const app = express();
+
+</code></pre>
+<pre><code class="js size-S">app.get('/', (req, res) => {</code></pre>
+<pre><code class="js size-S">    fetch()</code></pre>
+<pre><code class="js size-S">        .then(calculate)</code></pre>
+<pre class="fragment" data-fragment-index="5"><code class="js size-S">        .then(data => res.json(data));</code></pre>
+<pre><code class="js size-S">}
 
 </code></pre>
 <pre class="fragment" data-fragment-index="6"><code class="js size-S">app.listen(3000);</code></pre>
@@ -92,6 +202,18 @@
     </section>
 
     <section data-background="images/00_no-cache.jpg" class="image">
+    </section>
+
+    <section class="image" data-transition="fade-in">
+        <img src="images/long_calc_1.svg" alt="without cache" height="100%" />
+    </section>
+
+    <section class="image" data-transition="none">
+        <img src="images/long_calc_2.svg" alt="without cache" height="100%" />
+    </section>
+
+    <section class="image" data-transition="fade-out">
+        <img src="images/long_calc_3.svg" alt="without cache" height="100%" />
     </section>
 </section>
 
@@ -225,15 +347,15 @@ var cache = new Redis();
     </section>
 
     <section>
-        <pre class="fragment" data-fragment-index="3"><code class="js size-XS">cache.get('coffee')</code></pre>
+        <pre><code class="js size-XS">cache.get('coffee')</code></pre>
         <pre class="fragment" data-fragment-index="4"><code class="js size-XS">    .then(data => {</code></pre>
-        <pre class="fragment" data-fragment-index="5"><code class="js size-XS">        return data ? JSON.parse(data) : fetch()</code></pre>
-        <pre class="fragment" data-fragment-index="6"><code class="js size-XS">            .then(calculate)</code></pre>
+        <pre class="fragment" data-fragment-index="5"><code class="js size-XS">        if (data) { return JSON.parse(data); }
+        </code></pre>
+        <pre class="fragment" data-fragment-index="6"><code class="js size-XS">        return fetch().then(calculate)</code></pre>
         <pre class="fragment" data-fragment-index="7"><code class="js size-XS">            .then(data => {</code></pre>
         <pre class="fragment" data-fragment-index="7"><code class="js size-XS">                cache.set('coffee', data, 'EX', 3);</code></pre>
         <pre class="fragment" data-fragment-index="7"><code class="js size-XS">                return data;</code></pre>
-        <pre class="fragment" data-fragment-index="7"><code class="js size-XS">            })</code></pre>
-        <pre class="fragment" data-fragment-index="8"><code class="js size-XS">            .catch(() => cache.del('coffee'));</code></pre>
+        <pre class="fragment" data-fragment-index="7"><code class="js size-XS">            });</code></pre>
         <pre class="fragment" data-fragment-index="4"><code class="js size-XS">    })</code></pre>
         <pre class="fragment" data-fragment-index="9"><code class="js size-XS">    .then(data => res.json(data));</code></pre>
     </section>

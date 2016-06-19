@@ -261,8 +261,3 @@ section.vertical {
 .reveal .idea {
     font-style: italic;
 }
-
-.reveal .idea:before {
-    content: '💡';
-    font-style: initial;
-}
