@@ -536,26 +536,19 @@ cache.set('coffee', fetch().then(calculate));
     </section>
 
     <section>
-        <pre><code class="js size-S">
-class BaseModel {
-    fetch (url) {
-        return request(url);
-    }
-}
-        </code></pre>
-    </section>
-
-    <section>
-        <pre><code class="js size-S">
-var cache;
-
-class CacheBaseModel extends BaseModel {
-    fetch() {
-        cache = cache || super.fetch();
-        return cache.catch(() => cache = null);
-    }
-}
-        </code></pre>
+        <pre class="fragment" data-fragment-index="1"><code class='size-XS'>memoize(key, maxAge, fn) {</code></pre>
+        <pre class="fragment" data-fragment-index="2"><code class='size-XS'>    const value = cache.get(key);</code></pre>
+        <pre class="fragment" data-fragment-index="2"><code class='size-XS'>    if (value) {</code></pre>
+        <pre class="fragment" data-fragment-index="2"><code class='size-XS'>        return Promise.resolve(value);</code></pre>
+        <pre class="fragment" data-fragment-index="2"><code class='size-XS'>    }</code></pre>
+        <pre class="fragment" data-fragment-index="2"><code class='size-XS'>&nbsp;</code></pre>
+        <pre class="fragment" data-fragment-index="4"><code class='size-XS'>    return Promise.resolve()</code></pre>
+        <pre class="fragment" data-fragment-index="4"><code class='size-XS'>        .then(fn)</code></pre>
+        <pre class="fragment" data-fragment-index="5"><code class='size-XS'>        .then(results => {</code></pre>
+        <pre class="fragment" data-fragment-index="6"><code class='size-XS'>            cache.set(key, result, maxAge);</code></pre>
+        <pre class="fragment" data-fragment-index="7"><code class='size-XS'>            return result;</code></pre>
+        <pre class="fragment" data-fragment-index="5"><code class='size-XS'>        });</code></pre>
+        <pre class="fragment" data-fragment-index="1"><code class='size-XS'>}</code></pre>
     </section>
 
     <section class="image">
@@ -565,6 +558,43 @@ class CacheBaseModel extends BaseModel {
     <section>
         <p class="pos left size-L">Легко менять реализацию кэша</p>
         <p class="pos left size-L">Настрока кэширования моделей</p>
+    </section>
+</section>
+
+<section>
+    <section>
+        <h3>Кэширование на клиенте</h3>
+    </section>
+
+    <section>
+        <p class="neg left size-L fragment">cookie</p>
+        <p class="question left size-L fragment">sessionStorage</p>
+        <p class="question left size-L fragment">localStorage</p>
+    </section>
+
+    <section>
+        <pre><code>
+function setItem(key, maxAge, value) {
+    var data = JSON.stringify({
+        expire: Date.now() + maxAge,
+        value: value
+    });
+
+    localStorage.setItem(key, data);
+}
+        </code></pre>
+    </section>
+
+    <section>
+        <pre><code>
+function getItem(key, maxAge, value) {
+    var data = JSON.parse(localStorage.getItem(key));
+
+    if(data.expire > Date.now()) {
+        return data.value;
+    }
+}
+        </code></pre>
     </section>
 </section>
 
