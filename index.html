@@ -62,6 +62,7 @@
     <p class="pos left fragment size-L">Статика (HTTP запросы)</p>
     <p class="pos left fragment size-L">Получение данных</p>
     <p class="pos left fragment size-L">Результаты вычислений</p>
+    <p class="pos left fragment size-L">Шаблоны</p>
 </section>
 
 <section>
@@ -370,11 +371,68 @@ var cache = new Redis();
 
 <section>
     <section>
+        <h2>Кэширование шаблонов</h2>
+    </section>
+
+    <section>
+        <p class="left size-XL fragment">1. Прочитать шаблон</p>
+        <p class="left size-XL fragment">2. Скомпилировать</p>
+        <p class="left size-XL fragment">3. Применить</p>
+    </section>
+
+    <section>
+        <pre><code class="size-XS" data-trim>
+var _ = require('lodash');
+var str = '<%= date %>: Error "<%= error.message %>"';
+
+module.exports = _.template(str);
+        </code></pre>
+    </section>
+
+    <section>
+        <pre><code class="size-S" data-trim>
+var template = require('./template');
+var myError = Error('Oh-oh-oh!');
+
+console.log(template({
+    date: new Date(),
+    error: myError
+}));
+        </code></pre>
+
+        <pre class="fragment"><code class="size-XXS js" data-trim>
+// Tue Jun 21 2016 13:48:02 GMT+0500 (YEKT): Error "Oh-oh-oh!"
+        </code></pre>
+    </section>
+
+    <section>
+        <p class="pos left size-L fragment">Части шаблона</p>
+        <p class="pos left size-L fragment">Страница полностью</p>
+    </section>
+
+    <section>
+        <small>TODO: инструменты для кэширования шаблонов</small>
+    </section>
+
+    <section>
+        <p class="pos left size-L fragment">Выбор ключей</p>
+        <p class="pos left size-L fragment">Инвалидация</p>
+        <p class="neg left size-L fragment">Персональная информация</p>
+    </section>
+</section>
+
+<section>
+    <section>
         <h3>Эффективность кэша</h3>
 
         <blockquote class="fragment">
-            Кажется, эти данные нам нужны всегда и обновляются редко
+            «... кажется, эти данные нам нужны всегда и обновляются редко ...»
         </blockquote>
+    </section>
+
+    <section>
+        <h3>Эффективность кэша</h3>
+
         <pre class="fragment"><code class="size-S">HitRate = 'из кэша' / 'число запросов'</code></pre>
     </section>
 
