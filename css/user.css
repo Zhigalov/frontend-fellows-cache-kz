@@ -21,6 +21,7 @@
 .reveal h5,
 .reveal h6 {
     font-family: textbook-light, Arial;
+    text-transform: none;
 }
 
 @font-face {
