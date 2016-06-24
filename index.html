@@ -407,7 +407,30 @@ console.log(template({
     </section>
 
     <section>
-        <small>TODO: инструменты для кэширования шаблонов</small>
+        <pre><code class="size-S">
+{{# cache 'menu'}}
+    &lt;h1&gt;Coffee&lt;/h1&gt;
+    &lt;ul&gt;
+        {{#each items}}
+        &lt;li&gt;{{name}}&lt;/li&gt;
+        {{/each}}
+    &lt;/ul&gt;
+{{/cache}}
+        </code></pre>
+    </section>
+
+    <section>
+        <pre><code class="size-XS">
+var cache = Object.create(null)
+
+Handlebars.registerHelper('cache', (key, options) => {
+    if (!cache[key]) {
+        cache[key] = options.fn(options.data.root);
+    }
+
+    return cache[key];
+});
+        </code></pre>
     </section>
 
     <section>
@@ -422,14 +445,14 @@ console.log(template({
         <h3>Эффективность кэша</h3>
 
         <blockquote class="fragment">
-            «... кажется, эти данные нам нужны всегда и обновляются редко ...»
+            «... кажется, эти данные нам нужны всегда и обновляются они редко ...»
         </blockquote>
     </section>
 
     <section>
         <h3>Эффективность кэша</h3>
 
-        <pre class="fragment"><code class="size-S">HitRate = 'из кэша' / 'число запросов'</code></pre>
+        <pre><code class="size-S">HitRate = 'из кэша' / 'число запросов'</code></pre>
     </section>
 
     <section>
