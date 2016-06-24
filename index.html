@@ -19,7 +19,7 @@
     <link rel="stylesheet" href="css/user.css">
 
 	<!-- Code syntax highlighting -->
-	<link rel="stylesheet" href="plugin/highlight/github.min.css">
+	<link rel="stylesheet" href="plugin/highlight/tomorrow.css">
 
 	<!--[if lt IE 9]>
 	<script src="lib/js/html5shiv.js"></script>
@@ -77,7 +77,7 @@
 
 
 </code></pre>
-<pre class="fragment" data-fragment-index="2"><code class="js size-S">}
+<pre class="fragment" data-fragment-index="2"><code class="js size-S">});
 
 
 </code></pre>
@@ -126,7 +126,7 @@
 <pre class="fragment" data-fragment-index="4"><code class="js size-S">        .then(calculate)
 
 </code></pre>
-<pre><code class="js size-S">}
+<pre><code class="js size-S">});
 
 
 </code></pre>
@@ -188,7 +188,7 @@
 <pre><code class="js size-S">    fetch()</code></pre>
 <pre><code class="js size-S">        .then(calculate)</code></pre>
 <pre class="fragment" data-fragment-index="5"><code class="js size-S">        .then(data => res.json(data));</code></pre>
-<pre><code class="js size-S">}
+<pre><code class="js size-S">});
 
 </code></pre>
 <pre class="fragment" data-fragment-index="6"><code class="js size-S">app.listen(3000);</code></pre>
@@ -231,7 +231,7 @@
 <pre class="fragment" data-fragment-index="5"><code class="js size-S">        .then(calculate)</code></pre>
 <pre class="fragment" data-fragment-index="6"><code class="js size-S">        .then(data => cache = data)</code></pre>
 <pre class="fragment" data-fragment-index="7"><code class="js size-S">        .then(data => res.json(data));</code></pre>
-<pre class="fragment" data-fragment-index="2"><code class="js size-S">}</code></pre>
+<pre class="fragment" data-fragment-index="2"><code class="js size-S">});</code></pre>
     </section>
 
     <section class="image">
@@ -266,7 +266,7 @@
 <pre class="fragment" data-fragment-index="4"><code class="js size-S">    cache</code></pre>
 <pre class="fragment" data-fragment-index="5"><code class="js size-S">        .then(data => res.json(data))</code></pre>
 <pre class="fragment" data-fragment-index="6"><code class="js size-S">        .catch(() => cache = null);</code></pre>
-<pre class="fragment" data-fragment-index="2"><code class="js size-S">}</code></pre>
+<pre class="fragment" data-fragment-index="2"><code class="js size-S">});</code></pre>
     </section>
 
     <section class="image">
@@ -301,7 +301,7 @@ var cache = LRU({ maxAge: 3000 });
         <pre class="fragment" data-fragment-index="4"><code class="js size-S">    cache.get('coffee')</code></pre>
         <pre class="fragment" data-fragment-index="5"><code class="js size-S">        .then(data => res.json(data))</code></pre>
         <pre class="fragment" data-fragment-index="6"><code class="js size-S">        .catch(() => cache.del('coffee'));</code></pre>
-        <pre class="fragment" data-fragment-index="2"><code class="js size-S">}</code></pre>
+        <pre class="fragment" data-fragment-index="2"><code class="js size-S">});</code></pre>
     </section>
 
     <section data-background="images/02_lru-cache.jpg" class="image">
@@ -386,22 +386,18 @@ module.exports = _.template(str);
     </section>
 
     <section>
-        <pre><code class="size-S" data-trim>var template = require('./template');</code></pre>
-        <pre class="fragment"><code class="size-S">var myError = Error('Oh-oh-oh!');</code></pre>
-        <pre class="fragment"><code class="size-S">
-console.log(template({
-    date: new Date(),
-    error: myError
-}));
-
-</code></pre>
-
-        <pre class="fragment"><code class="size-XXS js" id="logTemplate">
-// Tue Jun 21 2016 13:48:02 GMT+0500 (YEKT): "Oh-oh-oh!"</code></pre>
-    </section>
-
-    <section class="image">
-        <img src="images/templates.svg" alt="Single cache" width="100%" />
+        <pre><code class="js size-XS">var template = require('./template');</code></pre>
+        <pre class="fragment" data-fragment-index="1"><code class="js size-XS">&nbsp;</code></pre>
+        <pre class="fragment" data-fragment-index="1"><code class="js size-XS">app.get('/', (req, res) => {</code></pre>
+        <pre class="fragment" data-fragment-index="2"><code class="js size-XS">    var myError = Error(':-(');</code></pre>
+        <pre class="fragment" data-fragment-index="3"><code class="js size-XS">&nbsp;</code></pre>
+        <pre class="fragment" data-fragment-index="3"><code class="js size-XS">    console.log(template({</code></pre>
+        <pre class="fragment" data-fragment-index="3"><code class="js size-XS">        date: new Date(),</code></pre>
+        <pre class="fragment" data-fragment-index="3"><code class="js size-XS">        error: myError</code></pre>
+        <pre class="fragment" data-fragment-index="3"><code class="js size-XS">    }));</code></pre>
+        <pre class="fragment" data-fragment-index="1"><code class="js size-XS">});</code></pre>
+        <pre class="fragment" data-fragment-index="4"><code class="size-XS js" id="logTemplate">
+// Tue Jun 21 2016 13:48:02 GMT+0500 (YEKT): ":-("</code></pre>
     </section>
 
     <section class="image">
@@ -501,7 +497,8 @@ Handlebars.registerHelper('cache', (key, options) => {
 // ...
 app.listen(3000);
 
-cache.set('coffee', fetch().then(calculate));
+var data = fetch().then(calculate);
+cache.set('coffee', data);
         </code></pre>
     </section>
 
@@ -544,7 +541,7 @@ cache.set('coffee', fetch().then(calculate));
     </section>
 
     <section>
-        <pre data-fragment-index="1"><code class='size-XS'>memoize(key, maxAge, fn) {</code></pre>
+        <pre data-fragment-index="1"><code class='size-XS'>function memoize(key, maxAge, fn) {</code></pre>
         <pre class="fragment" data-fragment-index="2"><code class='size-XS'>    if (cache.has(key)) {</code></pre>
         <pre class="fragment" data-fragment-index="2"><code class='size-XS'>        return Promise.resolve(cache.get(key));</code></pre>
         <pre class="fragment" data-fragment-index="2"><code class='size-XS'>    }</code></pre>
@@ -605,7 +602,6 @@ function getItem(key, maxAge, value) {
 </section>
 
 <section>
-    <h2>Спасибо!</h2>
     <pre><code class="size-S" data-trim>cache.set('speaker', {
     name: 'Жигалов Сергей',
     twitter: '@sergey_zhigalov',
@@ -614,6 +610,7 @@ function getItem(key, maxAge, value) {
     <pre class="fragment"><code class="size-S" data-trim>cache.set('assistant', {
     name: 'Мокеев Евгений'
 });</code></pre>
+    <h2 class="fragment">Спасибо!</h2>
 </section>
 </div>
 
@@ -623,7 +620,7 @@ function getItem(key, maxAge, value) {
 	<script src="js/reveal.js"></script>
     <script type="text/javascript">
         function tick() {
-            var text = '// ' + new Date() + ': "Oh-oh-oh!"'
+            var text = '// ' + new Date() + ': ":-("'
 
             document
                 .getElementById('logTemplate')
@@ -646,7 +643,16 @@ function getItem(key, maxAge, value) {
             history: true,
             dependencies: [
 				{ src: 'lib/js/classList.js', condition: function() { return !document.body.classList; } },
-				{ src: 'plugin/highlight/highlight.min.js', async: true, callback: function() { hljs.initHighlightingOnLoad(); } },
+				{
+                    src: './plugin/highlight/highlight.min.js',
+                    async: true,
+                    condition: function () {
+                        return Boolean(document.querySelector('pre code'));
+                    },
+                    callback: function () {
+                        hljs.initHighlightingOnLoad();
+                    }
+                },
 				{ src: 'plugin/zoom-js/zoom.js', async: true },
 				{ src: 'plugin/notes/notes.js', async: true }
 			]
