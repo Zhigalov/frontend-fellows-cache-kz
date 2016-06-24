@@ -262,3 +262,7 @@ section.vertical {
 .reveal .idea {
     font-style: italic;
 }
+
+.reveal blockquote {
+    box-shadow: none;
+}

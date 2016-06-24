@@ -68,7 +68,7 @@
 </section>
 
 <section>
-    <section>
+    <section data-transition="slide-in fade-out">
 <pre><code class="js size-S">var app = express();
 
 </code></pre>
@@ -83,7 +83,7 @@
 </code></pre>
     </section>
 
-    <section>
+    <section data-transition="fade">
         <table>
             <thead>
                 <tr>
@@ -117,7 +117,7 @@
         </table>
     </section>
 
-    <section>
+    <section data-transition="fade">
 <pre><code class="js size-S">var app = express();
 
 </code></pre>
@@ -132,7 +132,7 @@
 </code></pre>
     </section>
 
-    <section>
+    <section data-transition="fade">
         <table>
             <thead>
                 <tr>
@@ -180,7 +180,7 @@
         </table>
     </section>
 
-    <section>
+    <section data-transition="fade-in slide-out">
 <pre><code class="js size-S">var app = express();
 
 </code></pre>
@@ -281,7 +281,7 @@
 
 <section>
     <section>
-        <h3>lru-cache</h3>
+        <h2>lru-cache</h2>
     </section>
 
     <section>
@@ -329,7 +329,7 @@ var cache = LRU({ maxAge: 3000 });
     </section>
 
     <section>
-        <h3>Распределенный кэш</h3>
+        <h2>Распределенный кэш</h2>
     </section>
 
     <section>
@@ -371,7 +371,7 @@ var cache = new Redis();
     </section>
 
     <section>
-        <p class="left size-XL fragment">1. Прочитать шаблон</p>
+        <p class="left size-XL">1. Прочитать шаблон</p>
         <p class="left size-XL fragment">2. Скомпилировать</p>
         <p class="left size-XL fragment">3. Применить</p>
     </section>
@@ -379,31 +379,33 @@ var cache = new Redis();
     <section>
         <pre><code class="size-XS" data-trim>
 var _ = require('lodash');
-var str = '<%= date %>: Error "<%= error.message %>"';
+var str = '<%= date %>: "<%= error.message %>"';
 
 module.exports = _.template(str);
         </code></pre>
     </section>
 
     <section>
-        <pre><code class="size-S" data-trim>
-var template = require('./template');
-var myError = Error('Oh-oh-oh!');
-
+        <pre><code class="size-S" data-trim>var template = require('./template');</code></pre>
+        <pre class="fragment"><code class="size-S">var myError = Error('Oh-oh-oh!');</code></pre>
+        <pre class="fragment"><code class="size-S">
 console.log(template({
     date: new Date(),
     error: myError
 }));
-        </code></pre>
 
-        <pre class="fragment"><code class="size-XXS js" data-trim id="logTemplate">
-// Tue Jun 21 2016 13:48:02 GMT+0500 (YEKT): Error "Oh-oh-oh!"
-        </code></pre>
+</code></pre>
+
+        <pre class="fragment"><code class="size-XXS js" id="logTemplate">
+// Tue Jun 21 2016 13:48:02 GMT+0500 (YEKT): "Oh-oh-oh!"</code></pre>
     </section>
 
-    <section>
-        <p class="pos left size-L fragment">Части шаблона</p>
-        <p class="pos left size-L fragment">Страница полностью</p>
+    <section class="image">
+        <img src="images/templates.svg" alt="Single cache" width="100%" />
+    </section>
+
+    <section class="image">
+        <img src="images/templates_partial.svg" alt="Single cache" width="100%" />
     </section>
 
     <section>
@@ -420,23 +422,19 @@ console.log(template({
     </section>
 
     <section>
-        <pre><code class="size-XS">
-var cache = Object.create(null)
-
+        <pre><code class="size-XS js">
 Handlebars.registerHelper('cache', (key, options) => {
-    if (!cache[key]) {
-        cache[key] = options.fn(options.data.root);
+    if (!cache.has(key)) {
+        cache.set(key, options.fn(options.data.root));
     }
 
-    return cache[key];
+    return cache.get(key);
 });
         </code></pre>
     </section>
 
-    <section>
-        <p class="pos left size-L fragment">Выбор ключей</p>
-        <p class="pos left size-L fragment">Инвалидация</p>
-        <p class="neg left size-L fragment">Персональная информация</p>
+    <section class="image">
+        <img src="images/templates_all.svg" alt="Single cache" width="100%" />
     </section>
 </section>
 
@@ -547,9 +545,8 @@ cache.set('coffee', fetch().then(calculate));
 
     <section>
         <pre data-fragment-index="1"><code class='size-XS'>memoize(key, maxAge, fn) {</code></pre>
-        <pre class="fragment" data-fragment-index="2"><code class='size-XS'>    var value = cache.get(key);</code></pre>
-        <pre class="fragment" data-fragment-index="2"><code class='size-XS'>    if (value) {</code></pre>
-        <pre class="fragment" data-fragment-index="2"><code class='size-XS'>        return Promise.resolve(value);</code></pre>
+        <pre class="fragment" data-fragment-index="2"><code class='size-XS'>    if (cache.has(key)) {</code></pre>
+        <pre class="fragment" data-fragment-index="2"><code class='size-XS'>        return Promise.resolve(cache.get(key));</code></pre>
         <pre class="fragment" data-fragment-index="2"><code class='size-XS'>    }</code></pre>
         <pre class="fragment" data-fragment-index="2"><code class='size-XS'>&nbsp;</code></pre>
         <pre class="fragment" data-fragment-index="4"><code class='size-XS'>    return Promise.resolve()</code></pre>
@@ -608,15 +605,15 @@ function getItem(key, maxAge, value) {
 </section>
 
 <section>
-    <h3>Спасибо</h3>
-
-    <pre><code class="size-S">
-cache.set('Осторожно, закэшировано!', {
+    <h2>Спасибо!</h2>
+    <pre><code class="size-S" data-trim>cache.set('speaker', {
     name: 'Жигалов Сергей',
     twitter: '@sergey_zhigalov',
     email: 'zhigalov@yandex-team.ru'
-});
-    </code></pre>
+});</code></pre>
+    <pre class="fragment"><code class="size-S" data-trim>cache.set('assistant', {
+    name: 'Мокеев Евгений'
+});</code></pre>
 </section>
 </div>
 
@@ -626,7 +623,7 @@ cache.set('Осторожно, закэшировано!', {
 	<script src="js/reveal.js"></script>
     <script type="text/javascript">
         function tick() {
-            var text = '// ' + new Date() + ': Error "Oh-oh-oh!"'
+            var text = '// ' + new Date() + ': "Oh-oh-oh!"'
 
             document
                 .getElementById('logTemplate')
