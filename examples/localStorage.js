@@ -8,7 +8,7 @@ function setItem(key, maxAge, value) {
 }
 
 function getItem(key, maxAge, value) {
-    var data = JSON.parse(localStorage.getItem('key'));
+    var data = JSON.parse(localStorage.getItem(key));
 
     if(data.expire > Date.now()) {
         return data.value;
