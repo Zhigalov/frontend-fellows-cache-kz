@@ -1,7 +1,7 @@
-# Материалы доклада про кэширование на WSD [![](https://wsd.events/favicon.ico)](https://wsd.events/2016/06/25/#schedule)
+# Материалы доклада про кэширование
 
 ### Слайды
-[http://zhigalov.github.io/wsd-cache/](http://zhigalov.github.io/wsd-cache/)
+[http://zhigalov.github.io/frontend-fellows-cache-kz/](http://zhigalov.github.io/frontend-fellows-cache-kz/)
 
 ### Название
 "Осторожно, закэшировано!"
