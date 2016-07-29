@@ -53,12 +53,53 @@
 </section>
 
 <section>
+    <section>
+        <h3>Что кэшировать</h3>
+
+        <p class="pos left fragment size-L">Статика (HTTP запросы)</p>
+    </section>
+
+    <section>
+        <h3>max-age</h3>
+
+        <h4 class="left">server</h4>
+        <pre><code class="http size-L">Cache-Control: max-age=2629000;</code></pre>
+    </section>
+
+    <section class="image">
+        <img src="images/max_age.svg" alt="without cache" height="100%" />
+    </section>
+
+    <section>
+        <h3>Etag</h3>
+
+        <h4 class="left">server</h4>
+        <pre><code class="http size-S">Etag: "686897696a7c876b7e";</code></pre>
+
+        <h4 class="left">client</h4>
+        <pre><code class="http size-S">If-None-Match: "686897696a7c876b7e";</code></pre>
+    </section>
+
+    <section class="image">
+        <img src="images/etag.svg" alt="without cache" height="100%" />
+    </section>
+
+    <section>
+        <h3>Last-modified</h3>
+
+        <h4 class="left">server</h4>
+        <pre><code class="http size-XS">Last-modified: Fri, 29 Jul 2016 00:00:00 GMT;</code></pre>
+
+        <h4 class="left">client</h4>
+        <pre><code class="http size-XS">if-Modified-Since: Fri, 29 Jul 2016 00:00:00 GMT;</code></pre>
+    </section>
+</section>
+
+<section>
     <h3>Что кэшировать</h3>
 
-    <p class="pos left fragment size-L">Статика (HTTP запросы)</p>
+    <p class="pos left size-L">Статика (HTTP запросы)</p>
     <p class="pos left fragment size-L">Получение данных</p>
-    <p class="pos left fragment size-L">Результаты вычислений</p>
-    <p class="pos left fragment size-L">Шаблоны</p>
 </section>
 
 <section>
@@ -316,88 +357,16 @@ var cache = LRU({ maxAge: 3000 });
 </section>
 
 <section>
+    <section>
+        <h3>Что кэшировать</h3>
+
+        <p class="pos left size-L">Статика (HTTP запросы)</p>
+        <p class="pos left size-L">Получение данных</p>
+        <p class="pos left fragment size-L">Результаты вычислений (Шаблоны)</p>
+    </section>
+
     <section class="image">
-        <img src="images/single_frontend.svg" alt="Single cache" width="100%" />
-    </section>
-
-    <section class="image">
-        <img src="images/multi_frontend.svg" alt="Multiple cache" width="100%"/>
-    </section>
-
-    <section class="image">
-        <img src="images/union_cache.svg" alt="Union cache" width="100%"/>
-    </section>
-
-    <section>
-        <h2>Распределенный кэш</h2>
-    </section>
-
-    <section>
-        <img src="images/redisio.png" alt="redisio" />
-    </section>
-
-    <section>
-        <pre><code class="hljs javascript size-S" data-trim>
-var Redis = require('ioredis');
-var cache = new Redis();
-        </code></pre>
-    </section>
-
-    <section>
-        <pre><code class="js size-XS">cache.get('coffee')</code></pre>
-        <pre class="fragment" data-fragment-index="4"><code class="js size-XS">    .then(data => {</code></pre>
-        <pre class="fragment" data-fragment-index="5"><code class="js size-XS">        if (data) { return data; }
-        </code></pre>
-        <pre class="fragment" data-fragment-index="6"><code class="js size-XS">        return fetch().then(calculate)</code></pre>
-        <pre class="fragment" data-fragment-index="7"><code class="js size-XS">            .then(data => {</code></pre>
-        <pre class="fragment" data-fragment-index="7"><code class="js size-XS">                cache.set('coffee', data, 'EX', 3);</code></pre>
-        <pre class="fragment" data-fragment-index="7"><code class="js size-XS">                return data;</code></pre>
-        <pre class="fragment" data-fragment-index="7"><code class="js size-XS">            });</code></pre>
-        <pre class="fragment" data-fragment-index="4"><code class="js size-XS">    })</code></pre>
-        <pre class="fragment" data-fragment-index="9"><code class="js size-XS">    .then(data => res.json(data));</code></pre>
-    </section>
-
-    <section>
-        <p class="pos left size-L">Уменьшили время ответа</p>
-        <p class="pos left size-L">Уменьшили нагрузку</p>
-        <p class="pos left size-L">Контролируем время жизни</p>
-        <p class="pos left size-L">Общий кэш для всех инстансов</p>
-    </section>
-</section>
-
-<section>
-    <section>
-        <h2>Кэширование шаблонов</h2>
-    </section>
-
-    <section>
-        <p class="left size-XL">1. Прочитать шаблон</p>
-        <p class="left size-XL fragment">2. Скомпилировать</p>
-        <p class="left size-XL fragment">3. Применить</p>
-    </section>
-
-    <section>
-        <pre><code class="size-XS" data-trim>
-var _ = require('lodash');
-var str = '<%= date %>: "<%= error.message %>"';
-
-module.exports = _.template(str);
-        </code></pre>
-    </section>
-
-    <section>
-        <pre><code class="js size-XS">var template = require('./template');</code></pre>
-        <pre class="fragment" data-fragment-index="1"><code class="js size-XS">&nbsp;</code></pre>
-        <pre class="fragment" data-fragment-index="1"><code class="js size-XS">app.get('/', (req, res) => {</code></pre>
-        <pre class="fragment" data-fragment-index="2"><code class="js size-XS">    var myError = Error(':-(');</code></pre>
-        <pre class="fragment" data-fragment-index="3"><code class="js size-XS">&nbsp;</code></pre>
-        <pre class="fragment" data-fragment-index="3"><code class="js size-XS">    console.log(template({</code></pre>
-        <pre class="fragment" data-fragment-index="3"><code class="js size-XS">        date: new Date(),</code></pre>
-        <pre class="fragment" data-fragment-index="3"><code class="js size-XS">        error: myError</code></pre>
-        <pre class="fragment" data-fragment-index="3"><code class="js size-XS">    }));</code></pre>
-        <pre class="fragment" data-fragment-index="1"><code class="js size-XS">});</code></pre>
-        <pre class="fragment" data-fragment-index="4"><code class="size-XS js" id="logTemplate">
-// Tue Jun 21 2016 13:48:02 GMT+0500 (YEKT): ":-("</code></pre>
+        <img src="images/templates_all.svg" alt="Single cache" width="100%" />
     </section>
 
     <section class="image">
@@ -427,10 +396,6 @@ Handlebars.registerHelper('cache', (key, options) => {
     return cache.get(key);
 });
         </code></pre>
-    </section>
-
-    <section class="image">
-        <img src="images/templates_all.svg" alt="Single cache" width="100%" />
     </section>
 </section>
 
@@ -477,12 +442,6 @@ Handlebars.registerHelper('cache', (key, options) => {
                 </tr>
             </tbody>
         </table>
-    </section>
-
-    <section>
-        <p class="pos left size-L">Кэшировать популярные данные</p>
-        <p class="neg left size-L">Не кэшировать песональные данные</p>
-        <p class="neg left size-L">Не кэшировать сложные комбинации</p>
     </section>
 </section>
 
@@ -548,56 +507,16 @@ cache.set('coffee', data);
         <pre class="fragment" data-fragment-index="2"><code class='size-XS'>&nbsp;</code></pre>
         <pre class="fragment" data-fragment-index="4"><code class='size-XS'>    return Promise.resolve()</code></pre>
         <pre class="fragment" data-fragment-index="4"><code class='size-XS'>        .then(fn)</code></pre>
-        <pre class="fragment" data-fragment-index="5"><code class='size-XS'>        .then(results => {</code></pre>
+        <pre class="fragment" data-fragment-index="5"><code class='size-XS'>        .then(result => {</code></pre>
         <pre class="fragment" data-fragment-index="5"><code class='size-XS'>            cache.set(key, result, maxAge);</code></pre>
         <pre class="fragment" data-fragment-index="5"><code class='size-XS'>            return result;</code></pre>
         <pre class="fragment" data-fragment-index="5"><code class='size-XS'>        });</code></pre>
         <pre data-fragment-index="1"><code class='size-XS'>}</code></pre>
     </section>
 
-    <section class="image">
-        <img src="images/abstraction.svg" alt="Models abstraction" height="100%" />
-    </section>
-
     <section>
         <p class="pos left size-L">Легко менять реализацию кэша</p>
         <p class="pos left size-L">Настрока кэширования моделей</p>
-    </section>
-</section>
-
-<section>
-    <section>
-        <h3>Кэширование на клиенте</h3>
-
-        <p class="left size-L fragment">cookie</p>
-        <p class="left size-L fragment">sessionStorage</p>
-        <p class="left size-L fragment">localStorage</p>
-    </section>
-
-    <section>
-        <pre><code class="size-S">
-function setItem(key, maxAge, value) {
-    var data = JSON.stringify({
-        expire: Date.now() + maxAge,
-        value: value
-    });
-
-    localStorage.setItem(key, data);
-}
-        </code></pre>
-    </section>
-
-    <section>
-        <pre><code class="size-S">
-function getItem(key, maxAge, value) {
-    var store = localStorage.getItem(key);
-    var data = JSON.parse(store);
-
-    if(data.expire > Date.now()) {
-        return data.value;
-    }
-}
-        </code></pre>
     </section>
 </section>
 
